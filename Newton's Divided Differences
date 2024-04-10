@@ -28,26 +28,30 @@ coeff = zeros(4, 1);
 
 % Compute coefficients
 for i = 1:4
-for j = 1:4
-if j ~= i
-coeff(i) = y_vec(i) / (x_vec(i) - x_vec(j));
-end
-end
+    prod=1;
+    for j = 1:4
+        
+        if j ~= i
+             prod=prod*(x_vec(i) - x_vec(j));
+        end
+        coeff(i) = y_vec(i) /prod;
+    end
 end
 
 % Display expressions
 for i = 1:4
-expression = '';
-for j = 1:4
-if j ~= i && j ~= 4
-expression = [expression, sprintf('(x-%d)', x_vec(j))];
+    expression = '';
+    for j = 1:4
+        if j ~= i && j ~= 4 
+            expression = [expression, sprintf('(x-%d)*', x_vec(j))];
+        end
+        if j == 4 && i ~= 4
+            expression = [expression, sprintf('(x-%d)*%d+', x_vec(j), coeff(i))];
+        end
+        if i == 4 && j == 3 
+            expression = [expression, sprintf('%d', coeff(i))];
+        end
+    end
+    fprintf('%s\n', expression);
 end
-if j == 4 && i ~= 4
-expression = [expression, sprintf('(x-%d)%d+', x_vec(j), coeff(i))];
-end
-if i == 4 && j == 3
-expression = [expression, sprintf('%d', coeff(i))];
-end
-end
-fprintf('%s\n', expression);
-end
+
