@@ -1,0 +1,32 @@
+1)
+h=0.1;
+B=zeros(1,9);
+for i=1:9
+    B(i)=(-(i/10)^2+2*(i/10)-3)*exp(-(i/10))-(i/10)+2;
+end
+B(1,1)=B(1,1)+(1/h^2)-exp(1/10)/(2*h);
+
+A=zeros(9);
+
+for i=1:9
+    A(i,i)=(-2/h^2)-(i/10);
+    if i~=1
+        A(i,i-1)=(1/h^2)-exp(i/10)/(2*h);
+    end
+    if i~=9
+        A(i,i+1)=(1/h^2)+exp(i/10)/(2*h);
+    end
+end
+A
+y2_pred=inv(A)*B';
+
+y_pred=zeros(1,11);
+y_pred(1,1)=-1;
+for i=2:10
+    y_pred(i)=y2_pred(i-1);
+end
+d=linspace(0,1,11);
+scatter(d,y_pred);
+hold on
+scatter(d,(d-1).*exp(-d));
+abs(y_pred-(d-1).*exp(-d))
