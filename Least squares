@@ -1,0 +1,46 @@
+Q-1)x_val=[1,1.5,2,2.5,3,3.5,4];
+y_val=[25,31,27,28,36,35,32];
+
+x_sum=sum(x_val);
+x2_sum=sum(x_val.^2);
+y_sum=sum(y_val);
+xy_sum=sum(x_val.*y_val);
+
+A=[7,x_sum;x_sum,x2_sum];
+B=[y_sum;xy_sum];
+x=linsolve(A,B);
+x_data=linspace(1,4,100);
+y_data=x(1)+x(2)*x_data;
+plot(x_data,y_data)
+hold on
+scatter(x_val,y_val,'r')
+
+x_val=[0,0.5,1.0,1.5,2,2.5];
+y_val=[0,0.2,0.27,0.3,0.32,0.33];
+xi_sum=zeros(1,7);
+yi_sum=zeros(1,4);
+for i=1:7
+    xi_sum(i)=sum(x_val.^(i-1));
+end
+for i=1:4
+    yi_sum(i)=sum(x_val.^(i-1).*y_val);
+end
+
+A=zeros(4,4);
+B=zeros(1,4);
+for i=1:4
+    for j=1:4
+        A(i,j)=xi_sum(i+j-1);
+    end
+end
+for j=1:4
+    B(j)=yi_sum(i);
+end
+x=inv(A)*B';
+
+scatter(x_val,y_val);
+hold on
+
+x_data=linspace(0,3,100);
+y_data=x(1)+x(2).*x_data +x(3).*x_data.^2+x(4).*x_data.^3;
+plot(x_data,y_data)
